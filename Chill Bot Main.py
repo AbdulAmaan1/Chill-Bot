@@ -33,4 +33,4 @@ async def eightball (x):
     await x.send(choice(response))
 
 # running the bot
-client.run("ODk3Mzk4NTYzODA0NDQ2ODAx.YWVFig.rJaBgmx930aDqKkm9aE1nGyFZ3c")
+client.run("token")
