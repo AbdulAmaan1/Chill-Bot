@@ -23,7 +23,22 @@ async def on_message(message):
 # ping pong
 @client.command()
 async def ping(ctx):
-    await ctx.send("pong!")
+    j=ctx.message.content
+    j=j[10:].lower()
+    print(type(j))
+    trig_flags=['sin','tan','cos','cosec','sec','cot']
+    other_mathflags=['^','']
+    if j in trig_flags:
+        flags=[]
+        for i in trig_flags:
+            r=j.find(i)
+            if r==-1:
+                flags.append(i)
+        
+
+    p=eval(str(j))
+    print(p)
+    await ctx.send(p)
 
 
 # running the bot
