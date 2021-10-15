@@ -23,6 +23,7 @@ async def on_message(message):
 # ping pong
 @client.command()
 async def ping(ctx):
+    await ctx.send("pong!")
   
 #calculates stuff
 @client.command()
