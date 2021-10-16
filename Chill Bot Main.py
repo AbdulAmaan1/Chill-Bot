@@ -30,7 +30,7 @@ async def ping(ctx):
 async def eightball (x):
 
     response=[
-    "it's woth it",
+    "it's worth it",
     "it's bad",
     "you could have done it better",
     "you are the worst testing me ",
@@ -61,4 +61,4 @@ async def eightball (x):
     await x.send(choice(response))
 
 # running the bot
-client.run("")
+client.run("ODk3Mzk4NTYzODA0NDQ2ODAx.YWVFig.V0cNd_RvlUuTPtwvWPoDA-InNHc")
