@@ -1,5 +1,7 @@
 # importing necessary libraries
 import discord
+import discord.colour
+import math,sys
 from discord.ext import commands
 
 
@@ -10,7 +12,7 @@ client = commands.Bot(command_prefix = "-")
 # checking if bot is online
 @client.event
 async def on_ready():
-    print("I am ready")
+    print("I am ready macha")
 
 
 # checking messages
@@ -25,6 +27,34 @@ async def on_message(message):
 async def ping(ctx):
     await ctx.send("pong!")
   
+def extract(t,q,i):
+    global comma_detector
+    comma_detector=False
+    for q in range(len(t)):
+        res,base,count='','',0
+        while True:
+            if count<len(t[q]):
+                if t[q][count]==',' or comma_detector==True:
+                    base+=t[q][count]
+                    comma_detector=True
+                    count+=1
+                elif t[q][count]!=')' and comma_detector==False:
+                    res+=t[q][count]
+                    count+=1
+                else:
+                    res+=t[q][count]
+                    break
+            else:
+                break
+    if comma_detector==False:
+        string_to_replace=i+res
+    else:
+        string_to_replace=i+res+base
+    if comma_detector==False:
+        return string_to_replace,[res]
+    else:
+        return string_to_replace,[res,base]
+
 #calculates stuff
 @client.command()
 async def cal(ctx):
