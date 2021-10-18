@@ -17,8 +17,6 @@ async def on_ready():
 @client.event
 async def on_message(message):
 
-    await client.process_commands(message)
-
     #to reply to some specific messages sent by users
     if message.content.lower() == "hello there" :
         await message.channel.send("General Kenobi!")
@@ -31,6 +29,8 @@ async def on_message(message):
     if message.content().lower() == "69" :
         await message.channel.send("nice ( ͡° ͜ʖ ͡°)")
 
+    await client.process_commands(message)
+        
 
 # ping pong
 @client.command()
