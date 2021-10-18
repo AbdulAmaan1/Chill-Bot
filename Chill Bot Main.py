@@ -4,6 +4,9 @@ import discord.colour
 import math,sys
 from discord.ext import commands
 from random import choice
+import json
+import os
+
 
 # initializing bot prefix
 client = commands.Bot(command_prefix = "-")
@@ -84,6 +87,22 @@ async def eightball (x):
     await x.send(choice(response))
 
 
+with open(os.path.join(os.path.dirname(__file__), "quotes.json"), "r") as f:
+    content = json.load(f)
+
+
+# returns quote when user commands chill bot
+@client.command(name="quote", aliases=["qt"])
+async def quote(ctx):
+    quo = choice(content)
+    text = quo["text"]
+    author = quo["author"]
+
+    embed = discord.Embed(title=text, description=f"--{author}", colour=discord.Colour.blue())
+    embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+    await ctx.send(embed=embed)
+
+
 # user defined function for calculator feature    
 def extract(t,q,i):
     global comma_detector
@@ -113,6 +132,7 @@ def extract(t,q,i):
     else:
         return string_to_replace,[res,base]
 
+      
 #calculates stuff
 @client.command()
 async def cal(ctx):
