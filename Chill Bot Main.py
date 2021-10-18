@@ -15,7 +15,7 @@ client = commands.Bot(command_prefix = "-")
 # checking if bot is online
 @client.event
 async def on_ready():
-    print("I am ready")
+    print("I am ready macha")
 
 
 # checking messages
@@ -104,36 +104,6 @@ async def quote(ctx):
 
 
 # user defined function for calculator feature    
-def extract(t,q,i):
-    global comma_detector
-    comma_detector=False
-    for q in range(len(t)):
-        res,base,count='','',0
-        while True:
-            if count<len(t[q]):
-                if t[q][count]==',' or comma_detector==True:
-                    base+=t[q][count]
-                    comma_detector=True
-                    count+=1
-                elif t[q][count]!=')' and comma_detector==False:
-                    res+=t[q][count]
-                    count+=1
-                else:
-                    res+=t[q][count]
-                    break
-            else:
-                break
-    if comma_detector==False:
-        string_to_replace=i+res
-    else:
-        string_to_replace=i+res+base
-    if comma_detector==False:
-        return string_to_replace,[res]
-    else:
-        return string_to_replace,[res,base]
-
-      
-#calculates stuff
 @client.command()
 async def cal(ctx):
     heading,con,embed='','',''
@@ -142,82 +112,103 @@ async def cal(ctx):
         j=j[4:].lower() #remove the -cal part form it
         j=j.replace(' ','') #removing unwanted spaces
         trig_flags=['sin','tan','cosec','cos','sec','cot']
-        other_mathflags=['^','log','ln','^b']
-        flag1=False
-        flag2=False
-        for i in trig_flags:#checks if trig functions are there or not
-            if i in j:
-                flag1=True
-                break
-        for i in other_mathflags:#checks if other math functions are there or not
-            if i in j:
-                flag2=True
-                break
-        if flag1:
-            for i in trig_flags:# checks which trig functions are there and then evauluates them
-                r=j.find(i)
-                if r!=-1:
-                    t=j.split(i)[1:]# removes and seperates all trig functions from string and seperates their values 
-                    string_to_replace,res=extract(t,0,i)#extracts values
-                    res=res[0]
-                    num=res.lstrip('(').rstrip(')')#edits it so that it can be accepted by the float method
-                    cosec_check=False#checks if its a cosec function, had to do this on top of the if condition to prevent error
-                    if 'rad' in num:#checks if the value inside trig functions is in radians else converts them to radians
-                        u=num.find('rad')
-                        num=float(num[:u])
-                    else:
-                        num=math.radians(float(num))
-                    if i=='sin':
-                        answer=math.sin(num)
-                    elif i=='cos':
-                        answer=math.cos(num)
-                    elif i=='tan':
-                        answer=math.tan(num)
-                    elif i=='sec':
-                        answer=math.cos(num)
-                        answer=1/answer
-                    elif i=='cot':
-                        answer=math.tan(num)
-                        answer=1/answer
-                    elif i=='cosec':
-                        answer=math.sin(num)
-                        answer=1/answer
-                        answer='('+str(answer)+')'
-                        j=j.replace(string_to_replace,answer)#replacing the trig function in the expression string with the value of the function, so that the eval function can evaulate it at the end
-                        cosec_check=True
-                    if cosec_check==False:
-                        answer='('+str(answer)+')'
-                        j=j.replace(string_to_replace,answer)#same thing as the above comment
-        if flag2:# checks which math functions are there and then evauluates them
-            for i in other_mathflags:
-                r=j.find(i)
-                if r!=-1:
-                    t=j.split(i)[1:]
-                    if i=='^':
-                        j=j.replace('^','**')#replaces ^ symbol for ** as in python we represent power with '**' symbol and '^' is binary or 
-                    if i=='^b':
-                        j=j.replace('^b','^')#replaces ^b with ^ symbol so that the eval function can evaluate it as binary or
-                    if i=='ln':
-                        s,res=extract(t,0,'ln')
-                        res=res[0]
-                        num=float(res.lstrip('(').rstrip(')'))
-                        answer=str(math.log(num))
-                        j=j.replace(s,answer)#same replacing thing
-                    if i=='log':#here it also takes input in form log(value,base) so thats why the if else with the comma detector
-                        base=10
-                        s,y=extract(t,0,'log')
-                        if comma_detector==True:
-                            res=y[0]
-                            base=y[1]
+        other_flags=['^','log','ln','^b']
+        flags=trig_flags+other_flags
+        for i in flags:# checks which trig functions are there and then evauluates them
+            r=j.find(i)
+            if r!=-1:
+                t=j.split(i)[1:]# removes and seperates all trig functions from string and seperates their values 
+                #string_to_replace,res=extract(t,0,i)#extracts values
+                
+                for q in range(len(t)):
+                    print(j)
+                    res,base,count='','',0
+                    comma_detector=False
+                    while True:
+                        if count<len(t[q]):
+                            print(res,'base',base,comma_detector)
+                            if t[q][count]==',' or comma_detector==True:
+                                if t[q][count]!=')':    
+                                    base+=t[q][count]
+                                    comma_detector=True
+                                    count+=1
+                                else:
+                                    base+=t[q][count]
+                                    break
+                            elif comma_detector==False:
+                                if t[q][count]!=')':
+                                    res+=t[q][count]
+                                    count+=1    
+                                else:
+                                    res+=t[q][count]
+                                    break
                         else:
-                            res=y[0]
-                        num=float(res.lstrip('(').rstrip(')'))
-                        if comma_detector==True:
-                            base=float(base.lstrip(',').rstrip(')'))
-                        answer=str(math.log(num,base))
-                        j=j.replace(s,answer)
+                            break
+                    
+                    if comma_detector==False:
+                        string_to_replace=i+res
+                    else:
+                        string_to_replace=i+res+base
+                    print(string_to_replace)
+                    if i in trig_flags:
+                        num=res.lstrip('(').rstrip(')')#edits it so that it can be accepted by the float method
+                        cosec_check=False#checks if its a cosec function, had to do this on top of the if condition to prevent error
+                        if 'rad' in num:#checks if the value inside trig functions is in radians else converts them to radians
+                            u=num.find('rad')
+                            num=float(num[:u])
+                        else:
+                            num=math.radians(float(num))
+                        if i=='sin':
+                            answer=math.sin(num)
+                            answer='('+str(answer)+')'
+                            j=j.replace(string_to_replace,answer)
+                        elif i=='cos':
+                            answer=math.cos(num)
+                            answer='('+str(answer)+')'
+                            j=j.replace(string_to_replace,answer)
+                        elif i=='tan':
+                            answer=math.tan(num)
+                            answer='('+str(answer)+')'
+                            j=j.replace(string_to_replace,answer)
+                        elif i=='sec':
+                            answer=math.cos(num)
+                            answer=1/answer
+                            answer='('+str(answer)+')'
+                            j=j.replace(string_to_replace,answer)
+                        elif i=='cot':
+                            answer=math.tan(num)
+                            answer=1/answer
+                            answer='('+str(answer)+')'
+                            j=j.replace(string_to_replace,answer)
+                        elif i=='cosec':
+                            answer=math.sin(num)
+                            answer=1/answer
+                            answer='('+str(answer)+')'
+                            j=j.replace(string_to_replace,answer)#replacing the trig function in the expression string with the value of the function, so that the eval function can evaulate it at the end
+                            print(j)
+                    else:
+                        if i=='^':
+                            j=j.replace('^','**')#replaces ^ symbol for ** as in python we represent power with '**' symbol and '^' is binary or 
+                        elif i=='^b':
+                            j=j.replace('^b','^')#replaces ^b with ^ symbol so that the eval function can evaluate it as binary or
+                        elif i=='ln':
+                            num=float(res.lstrip('(').rstrip(')'))
+                            print(num)
+                            answer=str(math.log(num))
+                            j=j.replace(string_to_replace,answer)#same replacing thing
+                        elif i=='log':#here it also takes input in form log(value,base) so thats why the if else with the comma detector
+                            num=float(res.lstrip('(').rstrip(')'))
+                            print(num,string_to_replace,base)
+                            if comma_detector==True:
+                                base=float(base.lstrip(',').rstrip(')'))
+                                #comma_detector=False
+                            else:
+                                base=10
+                            answer=str(math.log(num,base))
+                            j=j.replace(string_to_replace,answer)
 
         p=eval(j)
+        print(p)
         con=str(round(p,3))
         heading='Answer'
         embed=discord.Embed(title=heading,content=con,colour=discord.Colour.random())
@@ -242,21 +233,19 @@ async def cal(ctx):
             em.set_image(url="https://media2.giphy.com/media/1VT3UNeWdijUSMpRL4/giphy.gif?cid=ecf05e47hbie1f18p093176buoo01qsi36eqapkfwx5c93jf&rid=giphy.gif&ct=g")
             em.add_field(name='Something is wrong',value=str(err))
             await ctx.send(embed=em)
-
-            
+        
 @client.command()
 async def hehe(ctx):#hehe boi
     em=discord.Embed(title="HEHE BOI",colour=discord.Colour.random())
-    em.set_image(url="https://media3.giphy.com/media/dPEJxh06y4OTC/giphy.gif?cid=ecf05e47vcr0ix4bhnyopjql1fcwcgj22hdn51h935aey0gr&rid=giphy.gif&ct=g")
+    em.set_image(url="https://c.tenor.com/COcSmM3DDf0AAAAC/he-hehe.gif")
     await ctx.send(embed=em)
     
     
 @client.command()
-async def noob(ctx):#LOL NOOB
-    em=discord.Embed(title='Noob',colour=discord.Colour.random())
-    em.set_image(url="https://media0.giphy.com/media/To7eFJmTrvS9y/giphy.gif?cid=ecf05e47kwlq4f6oaaqs9wzbzo9hfl6xxtkub76bqo0su76d&rid=giphy.gif&ct=g")
-    await ctx.send(embed=em)    
-    
+async def lol(ctx):#LOL NOOB
+    em=discord.Embed(title='LOL',colour=discord.Colour.random())
+    em.set_image(url="https://c.tenor.com/x5MCO3i9ArUAAAAd/el-risitas-risitas.gif")
+    await ctx.send(embed=em) 
     
 # running the bot
 client.run("ODk3Mzk4NTYzODA0NDQ2ODAx.YWVFig.V0cNd_RvlUuTPtwvWPoDA-InNHc")
