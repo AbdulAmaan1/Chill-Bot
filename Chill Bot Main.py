@@ -274,4 +274,4 @@ async def lol(ctx):#LOL NOOB
     em.set_image(url="https://c.tenor.com/x5MCO3i9ArUAAAAd/el-risitas-risitas.gif")
     await ctx.send(embed=em)
 # running the bot
-client.run("ODk3NDAwMjY1NTIxNjUxNzEy.YWVHIA.3bcENUBJMkpCQI3J-zIc2vaZoK4")
+client.run("ODk3Mzk4NTYzODA0NDQ2ODAx.YWVFig.V0cNd_RvlUuTPtwvWPoDA-InNHc")
