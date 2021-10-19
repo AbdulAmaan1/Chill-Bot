@@ -255,6 +255,12 @@ async def cal(ctx):
             em.set_image(url="https://media2.giphy.com/media/9Ai5dIk8xvBm0/giphy.gif?cid=ecf05e47qer7xbat2ydqrsqh3igdndn9vcevqok1j51avevm&rid=giphy.gif&ct=g")
             em.add_field(name='Please put proper expression variables are not allowed in expressions only values and function names',value='You can read my **documentation** to make proper expressions or try again :)')
             await ctx.send(embed=em)
+        elif str(er)=="<class 'SyntaxError'>":
+            del embed
+            em=discord.Embed(title="ERROR",colour=discord.Colour.red())
+            em.set_image(url="https://media2.giphy.com/media/9Ai5dIk8xvBm0/giphy.gif?cid=ecf05e47qer7xbat2ydqrsqh3igdndn9vcevqok1j51avevm&rid=giphy.gif&ct=g")
+            em.add_field(name='Please dont put () brakets around the values your working on which are inside the trig function, I wont be able to detect its unit then',value='You can read my **documentation** to make proper expressions or try again :)')
+            await ctx.send(embed=em)
         else:
             del embed
             em=discord.Embed(title="ERROR",colour=discord.Colour.red())
