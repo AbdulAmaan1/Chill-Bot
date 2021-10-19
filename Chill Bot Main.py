@@ -178,10 +178,11 @@ async def cal(ctx):
                     else:
                         string_to_replace=flag+res+base
                     if flag in trig_flags:
-                        if br==True and 'deg'in res:
-                            res='('+str(eval(res[1:-4]))+res[-4:]
-                        else:
-                            res='('+str(eval(res))+')'
+                        if br==True:
+                            if 'deg'in res:
+                                res='('+str(eval(res[1:-4]))+res[-4:]
+                            else:
+                                res='('+str(eval(res))+')'
                         num=res.lstrip('(').rstrip(')')#edits it so that it can be accepted by the float method
                         cosec_check=False#checks if its a cosec function, had to do this on top of the if condition to prevent error
                         if 'deg' in num:#checks if the value inside trig functions is in radians else converts them to radians
